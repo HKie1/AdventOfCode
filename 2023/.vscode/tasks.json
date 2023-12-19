@@ -12,7 +12,8 @@
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lstdc++",
                 "-Wall",
-                "-Wextra"
+                "-Wextra",
+                "-O3"
             ],
             "options": {
                 "cwd": "${fileDirname}"
