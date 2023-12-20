@@ -13,7 +13,7 @@
                 "-lstdc++",
                 "-Wall",
                 "-Wextra",
-                "-O3"
+                // "-O3"
             ],
             "options": {
                 "cwd": "${fileDirname}"
