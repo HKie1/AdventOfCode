@@ -39,40 +39,31 @@ void cathegorizeHand(PlayerHand &playerHand)
         return;
     }
 
-
     // 4 of a kind - 6
-    std::sort(hand.begin(), hand.end(), [](char a, char b) {
-        return STRENGTH.find(a) < STRENGTH.find(b);
-    });
-    std::regex fourOfAKindRegex("([23456789TJQKA])\\1{3}");
-    std::smatch fourOfAKindMatch;
-    if (std::regex_search(playerHand.hand, fourOfAKindMatch, fourOfAKindRegex))
+    std::sort(hand.begin(), hand.end(), [](char a, char b)
+              { return STRENGTH.find(a) < STRENGTH.find(b); });
+    if (
+        (hand[0] == hand[1] && hand[1] == hand[2] && hand[2] == hand[3]) ||
+        (hand[1] == hand[2] && hand[2] == hand[3] && hand[3] == hand[4]))
     {
         playerHand.category = 6;
         return;
     }
 
-
     // full house - 5
-    std::sort(hand.begin(), hand.end(), [](char a, char b) {
-        return STRENGTH.find(a) < STRENGTH.find(b);
-    });
+    std::sort(hand.begin(), hand.end(), [](char a, char b)
+              { return STRENGTH.find(a) < STRENGTH.find(b); });
     if (
-        (hand[0] == hand[1] && hand[1] == hand[2] && hand[3] == hand[4])
-        ||
-        (hand[0] == hand[1] && hand[2] == hand[3] && hand[3] == hand[4])
-    )
+        (hand[0] == hand[1] && hand[1] == hand[2] && hand[3] == hand[4]) ||
+        (hand[0] == hand[1] && hand[2] == hand[3] && hand[3] == hand[4]))
     {
         playerHand.category = 5;
         return;
     }
 
-
-
     // 3 of a kind - 4
-    std::sort(hand.begin(), hand.end(), [](char a, char b) {
-        return STRENGTH.find(a) < STRENGTH.find(b);
-    });
+    std::sort(hand.begin(), hand.end(), [](char a, char b)
+              { return STRENGTH.find(a) < STRENGTH.find(b); });
     std::regex threeOfAKindRegex("([23456789TJQKA])\\1{2}");
     std::smatch threeOfAKindMatch;
     if (std::regex_search(hand, threeOfAKindMatch, threeOfAKindRegex))
@@ -81,11 +72,9 @@ void cathegorizeHand(PlayerHand &playerHand)
         return;
     }
 
-
     // 2 pairs - 3
-    std::sort(hand.begin(), hand.end(), [](char a, char b) {
-        return STRENGTH.find(a) < STRENGTH.find(b);
-    });
+    std::sort(hand.begin(), hand.end(), [](char a, char b)
+              { return STRENGTH.find(a) < STRENGTH.find(b); });
     std::regex twoPairsRegex("([23456789TJQKA])\\1{1}.*([23456789TJQKA])\\2");
     std::smatch twoPairsMatch;
     if (std::regex_search(hand, twoPairsMatch, twoPairsRegex))
@@ -94,11 +83,9 @@ void cathegorizeHand(PlayerHand &playerHand)
         return;
     }
 
-
     // 1 pair - 2
-    std::sort(hand.begin(), hand.end(), [](char a, char b) {
-        return STRENGTH.find(a) < STRENGTH.find(b);
-    });
+    std::sort(hand.begin(), hand.end(), [](char a, char b)
+              { return STRENGTH.find(a) < STRENGTH.find(b); });
     std::regex pairRegex("([23456789TJQKA])\\1");
     std::smatch pairMatch;
     if (std::regex_search(hand, pairMatch, pairRegex))
@@ -107,18 +94,15 @@ void cathegorizeHand(PlayerHand &playerHand)
         return;
     }
 
-
     // highest card - 1
     playerHand.category = 1;
     return;
-
-
 }
-
 
 void sort(std::vector<PlayerHand> &hands)
 {
-    std::sort(hands.begin(), hands.end(), [](PlayerHand a, PlayerHand b) {
+    std::sort(hands.begin(), hands.end(), [](PlayerHand a, PlayerHand b)
+              {
         // iterate hand
         for(size_t i = 0; i < a.hand.length(); ++i)
         {
@@ -131,8 +115,7 @@ void sort(std::vector<PlayerHand> &hands)
                 return STRENGTH.find(a.hand[i]) > STRENGTH.find(b.hand[i]);
             }
         }
-        return false;
-    });
+        return false; });
 }
 
 int main()
@@ -140,7 +123,8 @@ int main()
     uint64_t final_sum = 0;
 
     uint16_t lines = 0;
-    std::ifstream file("input_test.txt");
+    // std::ifstream file("input_test.txt");
+    std::ifstream file("input.txt");
     std::vector<PlayerHand> hands;
     std::vector<PlayerHand> cat7;
     std::vector<PlayerHand> cat6;
@@ -149,7 +133,7 @@ int main()
     std::vector<PlayerHand> cat3;
     std::vector<PlayerHand> cat2;
     std::vector<PlayerHand> cat1;
-    
+
     std::string line;
 
     while (std::getline(file, line))
@@ -163,49 +147,49 @@ int main()
         hands.push_back(playerHand);
     }
 
-    for (auto& playerHand : hands)
+    for (auto &playerHand : hands)
     {
         cathegorizeHand(playerHand);
+        std::cout << "HAND: " << playerHand.hand << " CATEGORY: " << playerHand.category << std::endl;
     }
 
-    std::sort(hands.begin(), hands.end(), [](PlayerHand a, PlayerHand b) {
-        return a.category > b.category;
-    });
+    std::sort(hands.begin(), hands.end(), [](PlayerHand a, PlayerHand b)
+              { return a.category > b.category; });
 
     for (size_t i = 0; i < hands.size(); ++i)
     {
         switch (hands[i].category)
         {
-            case 1:
-                cat1.push_back(hands[i]);
-                break;
+        case 1:
+            cat1.push_back(hands[i]);
+            break;
 
-            case 2:
-                cat2.push_back(hands[i]);
-                break;
-            
-            case 3:
-                cat3.push_back(hands[i]);
-                break;
+        case 2:
+            cat2.push_back(hands[i]);
+            break;
 
-            case 4:
-                cat4.push_back(hands[i]);
-                break;
+        case 3:
+            cat3.push_back(hands[i]);
+            break;
 
-            case 5:
-                cat5.push_back(hands[i]);
-                break;
+        case 4:
+            cat4.push_back(hands[i]);
+            break;
 
-            case 6:
-                cat6.push_back(hands[i]);
-                break;
+        case 5:
+            cat5.push_back(hands[i]);
+            break;
 
-            case 7:
-                cat7.push_back(hands[i]);
-                break;
-            
-            default:
-                break;
+        case 6:
+            cat6.push_back(hands[i]);
+            break;
+
+        case 7:
+            cat7.push_back(hands[i]);
+            break;
+
+        default:
+            break;
         }
     }
 
@@ -218,49 +202,49 @@ int main()
     sort(cat2);
     sort(cat1);
 
-    for (auto& playerHand : cat7)
+    for (auto &playerHand : cat7)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat6)
+    for (auto &playerHand : cat6)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat5)
+    for (auto &playerHand : cat5)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat4)
+    for (auto &playerHand : cat4)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat3)
+    for (auto &playerHand : cat3)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat2)
+    for (auto &playerHand : cat2)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
         std::cout << playerHand.hand << " " << playerHand.bid << " " << playerHand.category << " " << playerHand.place << std::endl;
     }
 
-    for (auto& playerHand : cat1)
+    for (auto &playerHand : cat1)
     {
         playerHand.place = lines--;
         final_sum += playerHand.place * playerHand.bid;
