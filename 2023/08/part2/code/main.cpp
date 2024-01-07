@@ -75,7 +75,7 @@ int main()
     current_nodes.push_back("SGA");
     current_nodes.push_back("SVA");
 
-    std::cout << "Find the smallest common divisor of the following numbers: " << std::endl;
+    std::cout << "Find the least common multiple of the following numbers: " << std::endl;
     for (auto c : current_nodes)
     {
         uint64_t iter = find_iter(c, tree, directions);
