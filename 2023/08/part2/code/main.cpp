@@ -51,6 +51,7 @@ int main()
     std::string directions = "LRLRLRRLRRRLRRRLRRRLRLRRRLRRRLRRRLLRLRRRLRLRRRLLRRRLRRLRRRLRRLRLRRRLRRRLRLRRLRRRLRRLRRRLRRLRLRRLRRRLRLRRLRRRLLRRRLRLRRLLLRLLRLRRLLRRRLLRLLRRLRLRRRLLLRLRRLRLRRLRRRLRRLLRRLLRLRRRLRRRLRLLLLRLLRLRLRLRRRLRRLRRLRLRRRLLRRLRLLRRLRLRRLRLRLRRLRRLLRLRRLLRLLRRRLLLRRRLRRLRLRRRLRRLRRRLRRLLLRRRR";
 
     std::map<std::string, node> tree;
+    std::vector<std::string> startNodes;
 
     // read the tree for the game
     while (std::getline(file, line))
@@ -63,20 +64,14 @@ int main()
 
         tree.emplace(name, newNode);
 
-        // std::cout << name << " " << newNode.left << " " << newNode.right << std::endl;
+        if (name[2] == 'A')
+        {
+            startNodes.push_back(name);
+        }
     }
 
-    // try to figure out how many steps are needed beginning with AAA
-    std::vector<std::string> current_nodes;
-    current_nodes.push_back("AAA");
-    current_nodes.push_back("BJA");
-    current_nodes.push_back("GFA");
-    current_nodes.push_back("LQA");
-    current_nodes.push_back("SGA");
-    current_nodes.push_back("SVA");
-
     std::cout << "Find the least common multiple of the following numbers: " << std::endl;
-    for (auto c : current_nodes)
+    for (auto c : startNodes)
     {
         uint64_t iter = find_iter(c, tree, directions);
         std::cout << iter << " ";
